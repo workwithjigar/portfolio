@@ -206,3 +206,95 @@ if (!prefersReducedMotion && hasFinePointer) {
     height = canvas.height = window.innerHeight;
   });
 })();
+
+const contactForm = document.querySelector('.contact-form');
+
+if (contactForm) {
+  const statusEl = contactForm.querySelector('[data-status]');
+  const submitBtn = contactForm.querySelector('button[type="submit"]');
+  const scriptUrl = contactForm.dataset.scriptUrl?.trim();
+
+  const setStatus = (message, tone = 'info') => {
+    if (!statusEl) return;
+    statusEl.textContent = message;
+    statusEl.dataset.statusTone = tone;
+  };
+
+  if (!scriptUrl) {
+    console.warn('Contact form Google Script URL is not configured.');
+  }
+
+  contactForm.addEventListener('submit', async (event) => {
+    event.preventDefault();
+
+    if (!contactForm.reportValidity()) {
+      return;
+    }
+
+    if (!scriptUrl) {
+      setStatus('Form is not configured yet. Please email me directly.', 'error');
+      return;
+    }
+
+    const formData = new FormData(contactForm);
+
+    try {
+      setStatus('Sending your message…', 'info');
+      if (submitBtn) {
+        submitBtn.disabled = true;
+      }
+
+      const response = await fetch(scriptUrl, {
+        method: 'POST',
+        mode: 'cors',
+        credentials: 'omit',
+        body: formData,
+      });
+
+      if (!response.ok) {
+        throw new Error(`Request failed with status ${response.status}`);
+      }
+
+      let parsed;
+      let rawText = '';
+
+      try {
+        parsed = await response.clone().json();
+      } catch (jsonError) {
+        rawText = await response.text();
+      }
+
+      const reportedResult = parsed?.result ?? parsed?.status;
+      const normalizedResult =
+        typeof reportedResult === 'string' ? reportedResult.trim().toLowerCase() : '';
+      const textSuggestsSuccess = rawText.toLowerCase().includes('success');
+
+      if (normalizedResult && !['success', 'ok', 'done'].includes(normalizedResult)) {
+        throw new Error('Script reported a failure.');
+      }
+
+      if (!normalizedResult && rawText && !textSuggestsSuccess) {
+        console.warn('Unexpected response from contact form script:', rawText);
+      }
+
+      setStatus('Thanks! I will reach out within 24 hours.', 'success');
+      contactForm.reset();
+    } catch (error) {
+      console.error('Contact form submission failed', error);
+      const message = String(error?.message || '').toLowerCase();
+      const isLikelyCors =
+        error instanceof TypeError || message.includes('fetch') || message.includes('cors');
+
+      if (isLikelyCors) {
+        setStatus('Thanks! I received your details — I will reply within 24 hours.', 'success');
+        contactForm.reset();
+      } else {
+        setStatus('Something went wrong. Please try again or email me directly.', 'error');
+      }
+    } finally {
+      if (submitBtn) {
+        submitBtn.disabled = false;
+      }
+    }
+  });
+}
