@@ -946,6 +946,59 @@ li {
   display: none;
 }
 
+.project-card-more {
+  border: 1.5px dashed var(--border-strong);
+  background: transparent;
+  box-shadow: none;
+}
+
+.project-card-more:hover {
+  border-color: var(--primary-light);
+}
+
+.project-card-more-btn {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.9rem;
+  width: 100%;
+  min-height: 240px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--text-muted);
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 1rem;
+  padding: 2rem;
+  transition: color var(--transition-base);
+}
+
+.project-card-more-btn:hover {
+  color: var(--primary-light);
+}
+
+.project-card-more-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  border: 1.5px dashed var(--border-strong);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.8rem;
+  line-height: 1;
+  color: var(--text-muted);
+  transition: color var(--transition-base), border-color var(--transition-base);
+}
+
+.project-card-more-btn:hover .project-card-more-icon {
+  color: var(--primary-light);
+  border-color: var(--primary-light);
+}
+
 /* Project / portfolio cards */
 .project-grid {
   display: grid;
@@ -994,6 +1047,47 @@ li {
   width: auto;
   height: 32px;
   max-width: 160px;
+}
+
+.logo-marquee {
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+}
+
+.logo-marquee-track {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  width: max-content;
+  animation: logo-marquee-scroll 30s linear infinite;
+}
+
+.logo-marquee:hover .logo-marquee-track {
+  animation-play-state: paused;
+}
+
+.logo-marquee-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+
+@keyframes logo-marquee-scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .logo-marquee-track {
+    animation: none;
+  }
 }
 
 .work-grid .project-media {
@@ -1234,6 +1328,18 @@ li {
   align-items: center;
   justify-content: center;
   margin-bottom: 1.1rem;
+}
+
+@media (min-width: 961px) {
+  .process-card:not(:last-child)::after {
+    content: "";
+    position: absolute;
+    top: calc(2rem + 19px);
+    left: 100%;
+    width: 1.75rem;
+    height: 1px;
+    background: var(--border-strong);
+  }
 }
 
 /* About page skill grid */
