@@ -1,440 +1,271 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Jigar Prajapati | AI Engineering Portfolio</title>
+    <title>Jigar Prajapati | AI Product Engineer &amp; Senior Backend Engineer</title>
     <meta
       name="description"
-      content="AI/ML and Generative AI engineer building intelligent products, automation, and modern data platforms."
+      content="Jigar Prajapati — AI Product Engineer &amp; Senior Backend Engineer building production backend systems, cloud infrastructure, and applied AI products."
     />
+    <link rel="canonical" href="https://workwithjigar.in/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="WorkWithJigar" />
+    <meta property="og:url" content="https://workwithjigar.in/" />
+    <meta property="og:title" content="Jigar Prajapati | AI Product Engineer &amp; Senior Backend Engineer" />
+    <meta property="og:description" content="AI Product Engineer &amp; Senior Backend Engineer building production backend systems, cloud infrastructure, and applied AI products." />
+    <meta property="og:image" content="https://workwithjigar.in/assets/jigar-profile.jpg" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@jigar_8931" />
+    <meta name="twitter:creator" content="@jigar_8931" />
+    <meta name="twitter:title" content="Jigar Prajapati | AI Product Engineer &amp; Senior Backend Engineer" />
+    <meta name="twitter:description" content="AI Product Engineer &amp; Senior Backend Engineer building production backend systems, cloud infrastructure, and applied AI products." />
+    <meta name="twitter:image" content="https://workwithjigar.in/assets/jigar-profile.jpg" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="css/styles.css" />
   </head>
   <body>
-    <canvas id="constellation" aria-hidden="true"></canvas>
-    <div class="glow-overlay" aria-hidden="true"></div>
-    <svg class="svg-defs" aria-hidden="true" width="0" height="0">
-      <defs>
-        <linearGradient id="grad-exp" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stop-color="#7f5cff"></stop>
-          <stop offset="100%" stop-color="#27f2ff"></stop>
-        </linearGradient>
-      </defs>
-    </svg>
+    <div class="glow glow-a" aria-hidden="true"></div>
+    <div class="glow glow-b" aria-hidden="true"></div>
+    <div class="glow glow-c" aria-hidden="true"></div>
 
     <header class="site-header">
-      <div class="container">
-        <div class="brand">JP<span>AI</span></div>
-        <div class="header-controls">
-          <nav class="main-nav" aria-label="Primary">
-            <button id="nav-toggle" class="nav-toggle" aria-expanded="false" aria-label="Toggle navigation">
-              <span></span><span></span><span></span>
-            </button>
-            <ul id="nav-menu">
-              <li><a href="#about">About</a></li>
-              <li><a href="#services">Services</a></li>
-              <li><a href="#projects">Projects</a></li>
-              <li><a href="#contact">Contact</a></li>
-            </ul>
-          </nav>
-          <div class="header-actions">
-            <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Toggle color theme" aria-pressed="false">
-              <span class="sun" aria-hidden="true">
-                <svg viewBox="0 0 24 24"><path d="M12 5.5V3m0 18v-2.5M5.5 12H3m18 0h-2.5M6.8 6.8 5.1 5.1m13 13 1.7 1.7M17.2 6.8l1.7-1.7M6.8 17.2l-1.7 1.7M12 8.5a3.5 3.5 0 1 1 0 7 3.5 3.5 0 0 1 0-7Z"/></svg>
-              </span>
-              <span class="moon" aria-hidden="true">
-                <svg viewBox="0 0 24 24"><path d="M21 14.5A8.5 8.5 0 0 1 9.5 3.1 6.5 6.5 0 1 0 21 14.5Z"/></svg>
-              </span>
-            </button>
-            <a class="cta-button" href="mailto:workwithjigar@gmail.com">Let's Collaborate</a>
-          </div>
+      <div class="container header-inner">
+        <a class="brand" href="index.html">WorkWith<span>Jigar</span></a>
+        <nav class="main-nav" aria-label="Primary">
+          <button id="nav-toggle" class="nav-toggle" aria-expanded="false" aria-label="Toggle navigation">
+            <span></span><span></span><span></span>
+          </button>
+          <ul id="nav-menu">
+            <li><a href="about.html">About</a></li>
+            <li><a href="services.html">Services</a></li>
+            <li><a href="case-studies.html">Case Studies</a></li>
+            <li><a href="contact.html">Contact</a></li>
+          </ul>
+        </nav>
+        <div class="header-actions">
+          <a class="header-icon-btn" href="https://www.linkedin.com/in/work-with-jigar" target="_blank" rel="noopener" aria-label="LinkedIn profile">
+            <span class="linkedin-badge">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 1 1 0-4.124 2.062 2.062 0 0 1 0 4.124zM7.119 20.452H3.554V9h3.565v11.452z"/></svg>
+            </span>
+          </a>
+          <a class="btn btn-primary btn-small" href="contact.html">Let's talk <span aria-hidden="true">&rarr;</span></a>
         </div>
       </div>
     </header>
 
     <main>
-      <section class="hero" id="hero">
-        <div class="floating-orb orb-one" aria-hidden="true"></div>
-        <div class="floating-orb orb-two" aria-hidden="true"></div>
+      <section class="hero">
         <div class="container hero-grid">
           <div class="hero-copy">
-            <p class="eyebrow" data-reveal>AI/ML Engineer &amp; GenAI Architect</p>
-            <h1 data-reveal data-delay="0.05">
-              I blend production-grade engineering with applied AI to build intelligent, revenue-ready products.
+            <div class="eyebrow-row" data-reveal>
+              <span class="status-pill"><span class="status-dot" aria-hidden="true"></span>Available for select engagements</span>
+            </div>
+            <span class="eyebrow" data-reveal data-delay="0.05">AI Product Engineer &amp; Senior Backend Engineer</span>
+            <h1 data-reveal data-delay="0.08" data-split>
+              I build production backend systems and applied AI products that hold up at scale.
             </h1>
-            <p class="subtitle" data-reveal data-delay="0.1">
-              I'm Jigar Prajapati — your go-to partner for shipping real-world AI systems. From LLM copilots and document
-              intelligence to data pipelines and AI-powered SaaS, I help founders and enterprises move from idea to
-              measurable impact.
+            <p class="subtitle" data-reveal data-delay="0.15">
+              4+ years of experience architecting and building microservices, cloud infrastructure, and
+              AI-powered product workflows — from system design and implementation to deployment,
+              scalability, reliability, and cost optimization.
             </p>
-            <div class="hero-actions" data-reveal data-delay="0.15">
-              <a class="primary" href="#services">Explore Offerings</a>
-              <a class="secondary" href="Jigar-Prajapati-FullStack-Developer.pdf" target="_blank" rel="noopener">Download Resume</a>
+            <div class="hero-actions" data-reveal data-delay="0.2">
+              <a class="btn btn-primary" href="case-studies.html">View Case Studies</a>
+              <a class="btn btn-secondary" href="contact.html">Get in Touch</a>
             </div>
-            <div class="social-proof" data-reveal data-delay="0.25">
+            <div class="stat-row" data-reveal data-delay="0.25">
               <div>
-                <svg viewBox="0 0 40 40" aria-hidden="true" class="icon">
-                  <circle cx="20" cy="20" r="18" stroke="url(#grad-exp)" stroke-width="2.5" fill="none"></circle>
-                  <path
-                    d="M13 22l4 4 9-10"
-                    fill="none"
-                    stroke="url(#grad-exp)"
-                    stroke-width="2.8"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  ></path>
-                </svg>
-                <strong>4+</strong>
-                <span>Years shipping production systems</span>
+                <strong>4+ yrs</strong>
+                <span>Production engineering experience</span>
               </div>
               <div>
-                <svg viewBox="0 0 40 40" aria-hidden="true" class="icon">
-                  <circle cx="20" cy="20" r="18" fill="rgba(127,92,255,0.15)"></circle>
-                  <path
-                    d="M12 24l8-12 8 12h-16zm6 0h4l-2 6-2-6z"
-                    fill="url(#grad-exp)"
-                  ></path>
-                </svg>
-                <strong>150K+</strong>
-                <span>Users impacted across client platforms</span>
+                <strong>AWS Solutions Architecture</strong>
+                <span>Cloud architecture &amp; infrastructure</span>
               </div>
               <div>
-                <svg viewBox="0 0 40 40" aria-hidden="true" class="icon">
-                  <circle cx="20" cy="20" r="12" fill="rgba(39,242,255,0.12)"></circle>
-                  <path d="M20 8v24M8 20h24" stroke="url(#grad-exp)" stroke-width="2.5" stroke-linecap="round"></path>
-                </svg>
-                <strong>AWS</strong>
-                <span>Certified deployments at scale</span>
-              </div>
-            </div>
-            <div class="scroll-cue" aria-hidden="true">
-              <span>Scroll to explore</span>
-              <div class="mouse">
-                <div class="wheel"></div>
+                <strong>AI / LLM</strong>
+                <span>Applied product systems</span>
               </div>
             </div>
           </div>
-          <div class="hero-visual" data-reveal data-delay="0.2">
-            <div class="card" data-tilt>
-              <div class="avatar">
+          <div class="hero-visual" data-reveal data-delay="0.15">
+            <div class="hero-card">
+              <div class="hero-photo">
                 <img src="assets/jigar-profile.jpg" alt="Portrait of Jigar Prajapati" />
-                <div class="accent-ring" aria-hidden="true"></div>
               </div>
-              <div class="signal">
-                <span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12.5l5 5 11-11" /></svg>Realtime Analytics</span>
-                <span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 8l6-4 6 4v8l-6 4-6-4z" /></svg>GenAI Copilots</span>
-                <span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h4l2-4 4 8 2-4h4" /></svg>AI Agents</span>
+              <div class="hero-card-body">
+                <h3>Jigar Prajapati</h3>
+                <p class="role">AI Product &amp; Senior Backend Engineer</p>
+                <div class="hero-tags">
+                  <span>Node.js</span>
+                  <span>AWS</span>
+                  <span>PostgreSQL</span>
+                  <span>AI / LLM</span>
+                </div>
               </div>
-              <div class="statistic">
-                <h3>Production Intelligence</h3>
-                <p>Secure, scalable MLOps &amp; AI-integrated microservices tailored for business-critical workflows.</p>
-              </div>
+            </div>
+            <div class="hero-badge">
+              <strong>200K+</strong>
+              Users served by production systems I've built
             </div>
           </div>
         </div>
       </section>
 
-      <section class="about section" id="about">
-        <div class="container about-grid">
-          <div class="section-label" data-reveal>Why work with me</div>
-          <div class="about-card" data-reveal data-delay="0.05">
-            <h2>Builder mindset. AI-native execution.</h2>
-            <p>
-              I design and deploy intelligent software across the full stack — combining cloud-native engineering, data
-              strategy, and applied machine learning. My sweet spot: building GenAI experiences on robust backends,
-              integrating with live business data, and ensuring security, observability, and compliance.
-            </p>
-            <ul class="pill-list">
-              <li>LangChain, LlamaIndex, vector databases</li>
-              <li>LLM fine-tuning &amp; evaluation guardrails (OpenAI, Anthropic, Azure)</li>
-              <li>Document AI, extraction, knowledge graph enrichment</li>
-              <li>MLOps on AWS (SageMaker, ECS, Lambda, Step Functions)</li>
-              <li>Realtime analytics pipelines &amp; event-driven architectures</li>
-            </ul>
-          </div>
-          <div class="impact-card" data-reveal data-delay="0.12">
-            <div class="impact-heading">
-              <svg viewBox="0 0 48 48" aria-hidden="true">
-                <circle cx="24" cy="24" r="22" stroke="url(#grad-exp)" stroke-width="2.5" fill="none"></circle>
-                <path
-                  d="M16 24l5 5 11-11"
-                  fill="none"
-                  stroke="url(#grad-exp)"
-                  stroke-width="3"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                ></path>
-              </svg>
-              <h3>Impact snapshots</h3>
-            </div>
-            <ul>
-              <li>Architected microservices powering a 150K+ user talent marketplace, delivering sub-200ms AI matching.</li>
-              <li>Designed digital identity verification using Digilocker &amp; ML risk scoring to cut onboarding time by 60%.</li>
-              <li>Scaled multi-market commerce platform with automated pricing intelligence and fulfillment automation.</li>
-            </ul>
-            <div class="certification">
-              <span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7l8-4 8 4-8 4-8-4zm0 8l8 4 8-4" /></svg>Cloud + AI</span>
-              <p>AWS | Docker | Terraform | CI/CD pipelines</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section class="services section" id="services">
+      <section class="section">
         <div class="container">
-          <div class="section-header" data-reveal>
-            <div class="section-label">Services</div>
-            <h2>AI consulting, product engineering, and go-to-market acceleration.</h2>
+          <div class="section-header center" data-reveal>
+            <div class="section-label">What I Build</div>
+            <h2>Backend Development, AWS Cloud Architecture &amp; AI Engineering — End to End.</h2>
             <p>
-              Engage on end-to-end delivery or sprint-based engagements. I plug into founder-led teams, innovation pods,
-              and enterprises seeking pragmatic AI adoption.
+              I design and build scalable backend systems, AWS cloud infrastructure, and AI-powered
+              products from architecture and implementation through deployment, reliability, and
+              production operations.
             </p>
           </div>
-          <div class="service-grid">
-            <article class="service-card reveal" data-tilt data-reveal data-delay="0.05">
+          <div class="card-grid grid-3">
+            <article class="service-card" data-reveal data-delay="0.05">
               <div class="icon-bubble">
-                <svg viewBox="0 0 36 36" aria-hidden="true">
-                  <circle cx="18" cy="18" r="16" fill="rgba(127,92,255,0.16)"></circle>
-                  <path d="M11 18l4 4 9-9" stroke="url(#grad-exp)" stroke-width="2.6" fill="none" stroke-linecap="round" />
-                  <circle cx="14" cy="12" r="2" fill="#27f2ff"></circle>
-                </svg>
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 3a3 3 0 0 0-3 3c0 .35.06.68.16 1A3 3 0 0 0 4 9.5 3 3 0 0 0 5.5 12 3 3 0 0 0 4 14.5 3 3 0 0 0 6 17a3 3 0 0 0 3 3 2 2 0 0 0 2-2V5a2 2 0 0 0-2-2Z" /><path d="M16 3a3 3 0 0 1 3 3c0 .35-.06.68-.16 1A3 3 0 0 1 20 9.5 3 3 0 0 1 18.5 12 3 3 0 0 1 20 14.5 3 3 0 0 1 18 17a3 3 0 0 1-3 3 2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Z" /></svg>
               </div>
-              <h3>GenAI Co-Pilots &amp; Agents</h3>
-              <p>
-                Craft multi-turn LLM apps, knowledge assistants, and workflow agents with retrieval, memory, and safety
-                guardrails tailored to your domain.
-              </p>
-              <ul>
-                <li>LLM orchestration (LangChain, LangGraph)</li>
-                <li>Enterprise SSO &amp; access controls</li>
-                <li>Telemetry, evaluation, prompt ops</li>
-              </ul>
+              <h3>AI Engineering &amp; LLM Applications</h3>
+              <p>LLM integrations, RAG and document AI, semantic search, AI matching systems, and real-time voice applications.</p>
             </article>
-            <article class="service-card reveal" data-tilt data-reveal data-delay="0.1">
+            <article class="service-card" data-reveal data-delay="0.1">
               <div class="icon-bubble">
-                <svg viewBox="0 0 36 36" aria-hidden="true">
-                  <circle cx="18" cy="18" r="16" fill="rgba(39,242,255,0.16)"></circle>
-                  <path
-                    d="M12 22h12M12 16h12M12 10h12"
-                    stroke="url(#grad-exp)"
-                    stroke-width="2.2"
-                    stroke-linecap="round"
-                  ></path>
-                  <circle cx="14" cy="16" r="2" fill="#7f5cff"></circle>
-                </svg>
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 6L2 12l6 6" /><path d="M16 6l6 6-6 6" /><path d="M14 4l-4 16" /></svg>
               </div>
-              <h3>Intelligent Data Platforms</h3>
-              <p>
-                Stand up modern data pipelines, semantic search, and event-driven architectures that make AI features
-                dependable and observable.
-              </p>
-              <ul>
-                <li>Streaming ETL, feature stores, vector DBs</li>
-                <li>Realtime analytics with actionable insights</li>
-                <li>Automated compliance &amp; lineage tracking</li>
-              </ul>
+              <h3>Backend Development &amp; API Engineering</h3>
+              <p>Scalable REST APIs and microservices using Node.js, TypeScript, Python, and FastAPI — built for performance, reliability, and maintainability.</p>
             </article>
-            <article class="service-card reveal" data-tilt data-reveal data-delay="0.15">
+            <article class="service-card" data-reveal data-delay="0.15">
               <div class="icon-bubble">
-                <svg viewBox="0 0 36 36" aria-hidden="true">
-                  <circle cx="18" cy="18" r="16" fill="rgba(127,92,255,0.16)"></circle>
-                  <path
-                    d="M10 23l4-10 4 6 3-2 5 6"
-                    stroke="url(#grad-exp)"
-                    stroke-width="2.4"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    fill="none"
-                  ></path>
-                  <circle cx="14" cy="12" r="2" fill="#27f2ff"></circle>
-                </svg>
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 18a4 4 0 0 1-1-7.87A5 5 0 0 1 15.9 8.05 4.5 4.5 0 0 1 17.5 17H7z" /></svg>
               </div>
-              <h3>Full-Stack AI Product Delivery</h3>
-              <p>
-                From idea validation to launch — deliver end-to-end SaaS with AI-first user journeys, scalable APIs, and
-                cloud infrastructure hardened for growth.
-              </p>
-              <ul>
-                <li>Design systems, UX flows, and prototyping</li>
-                <li>Microservices, serverless, and container platforms</li>
-                <li>Monitoring, incident response, cost optimization</li>
-              </ul>
+              <h3>AWS Cloud Architecture &amp; Infrastructure</h3>
+              <p>Architecting AWS environments across serverless, containerized, and server-based workloads, choosing the right infrastructure for scalability, reliability, security, and cost efficiency.</p>
             </article>
+          </div>
+          <div style="text-align:center; margin-top: 2.5rem;" data-reveal data-delay="0.2">
+            <a class="btn btn-accent" href="services.html">Explore All Services <span aria-hidden="true">&rarr;</span></a>
           </div>
         </div>
       </section>
 
-      <section class="projects section" id="projects">
+      <section class="section section-alt">
         <div class="container">
-          <div class="section-header" data-reveal>
-            <div class="section-label">Flagship wins</div>
-            <h2>Case studies across AI, automation, and data-rich platforms.</h2>
+          <div class="section-header center" data-reveal>
+            <div class="section-label">Selected Work</div>
+            <h2>Selected AI, Backend, Cloud &amp; Platform Engineering Projects.</h2>
+            <p>A selection of production systems I've designed and built across AI, backend engineering, cloud infrastructure, and platform development.</p>
           </div>
-          <div class="project-grid">
-            <article class="project-card reveal" data-tilt data-reveal data-delay="0.05">
-              <div class="project-meta">
-                <span><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 14l4-8 3 4 2-2 3 6" /></svg>Talent Intelligence Platform</span>
-                <span>Crayon Jobs · South Africa</span>
+          <div class="project-grid work-grid">
+            <article class="project-card" data-reveal data-delay="0.05">
+              <div class="project-media">
+                <span class="project-logo-plate"><img src="assets/logos/crayon-logo.svg" alt="Crayon.jobs logo" /></span>
               </div>
-              <h3>LLM matching &amp; talent insights for 150K+ professionals</h3>
-              <p>
-                Led backend architecture and AI integration for a large-scale job marketplace. Delivered retrieval-augmented
-                candidate ranking, employer-facing analytics, and CI/CD on AWS EC2 with automated scaling.
-              </p>
-              <ul>
-                <li>Stack: Node.js, React, PostgreSQL, AWS, Python, OpenAI</li>
-                <li>Outcome: Match quality +28%, recruiter efficiency +35%</li>
-              </ul>
+              <div class="project-body">
+                <div class="project-meta">
+                  <span class="project-category">AI Recruitment Platform</span>
+                </div>
+                <h3>Crayon.jobs</h3>
+                <p>AI-powered CV parsing, semantic candidate-job matching, and real-time AI interviews built for a scalable recruitment platform.</p>
+                <div class="project-stat">
+                  <span class="project-stat-number">200K+</span>
+                  <span class="project-stat-label">Users served on the platform</span>
+                </div>
+                <div class="tech-badge-row">
+                  <span class="tech-badge"><img src="assets/icons/nodejs.svg" alt="" />Node.js</span>
+                  <span class="tech-badge"><img src="assets/icons/python.svg" alt="" />Python</span>
+                  <span class="tech-badge"><img src="assets/icons/aws.svg" alt="" />AWS</span>
+                  <span class="tech-badge"><img src="assets/icons/postgresql.svg" alt="" />PostgreSQL</span>
+                  <span class="tech-badge"><img src="assets/icons/microservices.svg" alt="" />Microservice</span>
+                  <span class="tech-badge"><img src="assets/icons/openai.svg" alt="" />OpenAI</span>
+                </div>
+                <div class="contribution-row">
+                  <span class="icon-bubble contribution-icon">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4" /><path d="M4 20c0-4 3.5-7 8-7s8 3 8 7" /></svg>
+                  </span>
+                  <div>
+                    <strong>My Contribution</strong>
+                    <p>Backend Architecture &bull; AI Engineering &bull; Cloud Infrastructure</p>
+                  </div>
+                </div>
+                <a class="view-case-study" href="case-studies.html">View Case Study <span aria-hidden="true">&rarr;</span></a>
+              </div>
             </article>
-            <article class="project-card reveal" data-tilt data-reveal data-delay="0.1">
-              <div class="project-meta">
-                <span><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 6h12v8H4z" /><path d="M7 9h3" /></svg>Document Intelligence</span>
-                <span>Identity verification suite</span>
+            <article class="project-card" data-reveal data-delay="0.1">
+              <div class="project-media">
+                <span class="project-logo-plate"><img src="assets/logos/bridge-logo.svg" alt="The Bridge logo" /></span>
               </div>
-              <h3>AI-assisted KYC automation with Digilocker and fraud checks</h3>
-              <p>
-                Built multi-source document verification microservices with ML-driven anomaly detection. Containerized on
-                AWS with Docker, orchestrated pipelines, and real-time dashboards for compliance teams.
-              </p>
-              <ul>
-                <li>Stack: Node.js, TypeScript, React, MySQL, AWS, Python</li>
-                <li>Outcome: Onboarding time -60%, manual review -45%</li>
-              </ul>
+              <div class="project-body">
+                <div class="project-meta">
+                  <span class="project-category">Privacy-First AI Platform</span>
+                </div>
+                <h3>The Bridge</h3>
+                <p>A private AI reflection platform for better thinking, combining daily guided reflection, 144-second conversations, and curated reading recommendations.</p>
+                <div class="tech-badge-row">
+                  <span class="tech-badge"><img src="assets/icons/python.svg" alt="" />Python</span>
+                  <span class="tech-badge"><img src="assets/icons/fastapi.svg" alt="" />FastAPI</span>
+                  <span class="tech-badge"><img src="assets/icons/aws.svg" alt="" />AWS</span>
+                  <span class="tech-badge"><img src="assets/icons/dynamodb.svg" alt="" />DynamoDB</span>
+                  <span class="tech-badge"><img src="assets/icons/claude.svg" alt="" />Claude</span>
+                </div>
+                <div class="contribution-row">
+                  <span class="icon-bubble contribution-icon">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4" /><path d="M4 20c0-4 3.5-7 8-7s8 3 8 7" /></svg>
+                  </span>
+                  <div>
+                    <strong>My Contribution</strong>
+                    <p>Backend Architecture &bull; AI Engineering &bull; AWS</p>
+                  </div>
+                </div>
+                <a class="view-case-study" href="case-studies.html">View Case Study <span aria-hidden="true">&rarr;</span></a>
+              </div>
             </article>
-            <article class="project-card reveal" data-tilt data-reveal data-delay="0.15">
-              <div class="project-meta">
-                <span><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 4h12v12H4z" /><path d="M4 12h12" /></svg>Commerce Intelligence</span>
-                <span>Global books marketplace</span>
-              </div>
-              <h3>Predictive inventory &amp; pricing automation for omnichannel sellers</h3>
-              <p>
-                Delivered AI-enabled inventory planning, dynamic pricing, and fulfillment orchestration for high-volume
-                sellers. Implemented event-driven services and analytics dashboards to optimize decisions.
-              </p>
-              <ul>
-                <li>Stack: Node.js, React, MongoDB, GCP, Airflow</li>
-                <li>Outcome: Stockouts -32%, fulfillment SLAs +20%</li>
-              </ul>
-            </article>
           </div>
-        </div>
-      </section>
-
-      <section class="stack section" id="stack">
-        <div class="container">
-          <div class="section-header" data-reveal>
-            <div class="section-label">Toolchain</div>
-            <h2>Battle-tested with modern AI &amp; engineering ecosystems.</h2>
+          <div style="text-align:center; margin-top: 2.5rem;" data-reveal data-delay="0.15">
+            <a class="btn btn-accent" href="case-studies.html">View All Case Studies <span aria-hidden="true">&rarr;</span></a>
           </div>
-          <div class="stack-grid">
-            <div class="stack-card" data-tilt data-reveal data-delay="0.05">
-              <span class="stack-icon"><svg viewBox="0 0 28 28" aria-hidden="true"><path d="M14 4l8 4-8 4-8-4 8-4zm0 8l8 4-8 4-8-4 8-4zm0 8l8 4-8 4-8-4 8-4z" /></svg></span>
-              <h3>AI &amp; ML</h3>
-              <p>OpenAI, Anthropic, Azure OpenAI, HuggingFace, LangChain, LlamaIndex, Pinecone, Weaviate, Vector DBs</p>
-            </div>
-            <div class="stack-card" data-tilt data-reveal data-delay="0.1">
-              <span class="stack-icon"><svg viewBox="0 0 28 28" aria-hidden="true"><path d="M6 8h16v4H6zm0 8h16v4H6z" /></svg></span>
-              <h3>Data &amp; Ops</h3>
-              <p>AWS (SageMaker, ECS, Lambda, Step Functions), GCP, Docker, Terraform, Kubernetes, Prometheus, Grafana</p>
-            </div>
-            <div class="stack-card" data-tilt data-reveal data-delay="0.15">
-              <span class="stack-icon"><svg viewBox="0 0 28 28" aria-hidden="true"><path d="M6 6h16v10H6z" /><path d="M10 20h8" /></svg></span>
-              <h3>Product Engineering</h3>
-              <p>Node.js, Python, FastAPI, React, Next.js, Typescript, PostgreSQL, MongoDB, Redis, RabbitMQ, Microservices</p>
-            </div>
-            <div class="stack-card" data-tilt data-reveal data-delay="0.2">
-              <span class="stack-icon"><svg viewBox="0 0 28 28" aria-hidden="true"><path d="M6 7l5 4-5 4V7zm6-3h10v16H12z" /></svg></span>
-              <h3>Collaboration</h3>
-              <p>GitHub, Linear, JIRA, Notion, Figma, Product discovery workshops, AI readiness assessments</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section class="process section" id="process">
-        <div class="container process-grid">
-          <div class="section-label" data-reveal>Approach</div>
-          <div class="process-copy" data-reveal data-delay="0.05">
-            <h2>Partnering model that keeps momentum high.</h2>
-            <p>
-              Whether we're building a GenAI assistant or replatforming legacy systems, my delivery playbook focuses on
-              clarity, rapid iteration, and measurable ROI.
-            </p>
-          </div>
-          <div class="process-steps">
-            <div class="process-card reveal" data-tilt data-reveal data-delay="0.08">
-              <span class="step">01</span>
-              <h3>Discovery &amp; AI Readiness</h3>
-              <p>Workshop needs, assess data, and define success metrics. Align on scope, architecture, and compliance.</p>
-              <div class="process-icon">
-                <svg viewBox="0 0 36 36" aria-hidden="true"><path d="M12 18h12M18 12v12" /></svg>
-              </div>
-            </div>
-            <div class="process-card reveal" data-tilt data-reveal data-delay="0.15">
-              <span class="step">02</span>
-              <h3>Pilot &amp; Rapid Prototyping</h3>
-              <p>Ship a working slice fast. Validate with stakeholders, instrument feedback loops, and iterate on prompts.</p>
-              <div class="process-icon">
-                <svg viewBox="0 0 36 36" aria-hidden="true"><path d="M10 22l8-12 8 12H10zm8 0v4" /></svg>
-              </div>
-            </div>
-            <div class="process-card reveal" data-tilt data-reveal data-delay="0.22">
-              <span class="step">03</span>
-              <h3>Production Launch &amp; Scale</h3>
-              <p>Harden infrastructure, automate deployments, add guardrails, and transition to continuous improvement.</p>
-              <div class="process-icon">
-                <svg viewBox="0 0 36 36" aria-hidden="true"><path d="M12 24l6-12 6 12H12zm6 0v4" /></svg>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section class="cta section" id="contact">
-        <div class="container cta-grid">
-          <div class="cta-copy" data-reveal>
-            <div class="section-label">Let's build</div>
-            <h2>Ready to launch your next intelligent product?</h2>
-            <p>
-              Share a few lines about your idea or challenge. I respond within 24 hours with a discovery call slot and an
-              initial game plan.
-            </p>
-            <div class="cta-links">
-              <a href="mailto:workwithjigar@gmail.com" class="primary">Drop an email</a>
-              <a href="https://www.linkedin.com/in/jigar-prajapati-320148169/" class="secondary" target="_blank" rel="noopener">Connect on LinkedIn</a>
-            </div>
-          </div>
-          <form class="contact-form" data-script-url="https://script.google.com/macros/s/AKfycbwrJhceZ-D2-rLgpWNDjyPnUinf6Mqv7ypIqf27CUYcmeCaQE7pa3M7iWUxlFk4hJnO/exec" data-reveal data-delay="0.08">
-            <label for="name">Name</label>
-            <input id="name" name="name" type="text" placeholder="Your name" required />
-            <label for="email">Email</label>
-            <input id="email" name="email" type="email" placeholder="you@company.com" required />
-            <label for="message">Project details</label>
-            <textarea id="message" name="message" rows="4" placeholder="Tell me about the AI product you want to build" required></textarea>
-            <button type="submit">Send message</button>
-            <p class="form-status" data-status aria-live="polite"></p>
-          </form>
         </div>
       </section>
     </main>
 
     <footer class="site-footer">
-      <div class="container">
-        <span>© <span id="year"></span> Jigar Prajapati. Delivering smart, scalable, and efficient tech worldwide.</span>
-        <div class="footer-links">
-          <a href="Jigar-Prajapati-FullStack-Developer.pdf" target="_blank" rel="noopener">Resume</a>
-          <a href="mailto:workwithjigar@gmail.com">Email</a>
-          <a href="https://www.linkedin.com/in/jigar-prajapati-320148169/" target="_blank" rel="noopener">LinkedIn</a>
+      <div class="container footer-grid">
+        <div class="footer-brand">
+          <a class="brand" href="index.html">WorkWith<span>Jigar</span></a>
+          <p>AI Product Engineer &amp; Senior Backend Engineer building production-grade backend systems and applied AI products.</p>
         </div>
+        <div class="footer-links">
+          <h4>Explore</h4>
+          <a href="about.html">About</a>
+          <a href="services.html">Services</a>
+          <a href="case-studies.html">Case Studies</a>
+          <a href="contact.html">Contact</a>
+        </div>
+        <div class="footer-contact">
+          <h4>Get in touch</h4>
+          <a href="mailto:workwithjigar@gmail.com">workwithjigar@gmail.com</a>
+          <a href="tel:+919979928103">+91 99799 28103</a>
+          <a href="https://www.linkedin.com/in/work-with-jigar" target="_blank" rel="noopener">LinkedIn</a>
+          <a href="https://x.com/jigar_8931" target="_blank" rel="noopener">X (Twitter)</a>
+        </div>
+      </div>
+      <div class="container footer-bottom">
+        <span>© <span id="year"></span> Jigar Prajapati. All rights reserved.</span>
+        <span class="footer-tag">built from scratch, shipped with care.</span>
       </div>
     </footer>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
     <script src="js/app.js" defer></script>
   </body>
 </html>
