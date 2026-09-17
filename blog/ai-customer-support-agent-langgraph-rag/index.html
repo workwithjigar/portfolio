@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Building a Production AI Customer Support Agent | Jigar Prajapati</title>
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16.png" />
+    <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" />
+    <meta
+      name="description"
+      content="Most 'AI support agents' are just message-in, LLM-out. Here's the architecture I use for a production one — FastAPI, LangGraph, RAG, Redis, and tool calling — that looks up real order and payment data and knows when to escalate to a human."
+    />
+    <meta name="keywords" content="AI agent, LangGraph, RAG, FastAPI, tool calling, customer support automation, Redis, agentic AI architecture" />
+    <link rel="canonical" href="https://workwithjigar.in/blog/ai-customer-support-agent-langgraph-rag" />
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="WorkWithJigar" />
+    <meta property="og:url" content="https://workwithjigar.in/blog/ai-customer-support-agent-langgraph-rag" />
+    <meta property="og:title" content="Building a Production AI Customer Support Agent: FastAPI, LangGraph, RAG & Tool Calling" />
+    <meta property="og:description" content="Most 'AI support agents' are just message-in, LLM-out. Here's the architecture I use for a production one — FastAPI, LangGraph, RAG, Redis, and tool calling — that looks up real order and payment data and knows when to escalate to a human." />
+    <meta property="og:image" content="https://workwithjigar.in/assets/blog/ai-customer-support-agent-langgraph-rag.jpg" />
+    <meta property="og:image:width" content="1672" />
+    <meta property="og:image:height" content="941" />
+    <meta property="og:image:type" content="image/jpeg" />
+    <meta property="article:published_time" content="2026-09-17" />
+    <meta property="article:author" content="Jigar Prajapati" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@jigar_8931" />
+    <meta name="twitter:creator" content="@jigar_8931" />
+    <meta name="twitter:title" content="Building a Production AI Customer Support Agent: FastAPI, LangGraph, RAG & Tool Calling" />
+    <meta name="twitter:description" content="Most 'AI support agents' are just message-in, LLM-out. Here's the architecture I use for a production one — FastAPI, LangGraph, RAG, Redis, and tool calling — that looks up real order and payment data and knows when to escalate to a human." />
+    <meta name="twitter:image" content="https://workwithjigar.in/assets/blog/ai-customer-support-agent-langgraph-rag.jpg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/css/styles.css" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "headline": "Building a Production AI Customer Support Agent: FastAPI, LangGraph, RAG & Tool Calling",
+        "description": "Most 'AI support agents' are just message-in, LLM-out. Here's the architecture I use for a production one — FastAPI, LangGraph, RAG, Redis, and tool calling — that looks up real order and payment data and knows when to escalate to a human.",
+        "author": { "@type": "Person", "name": "Jigar Prajapati", "url": "https://workwithjigar.in/about" },
+        "datePublished": "2026-09-17",
+        "dateModified": "2026-09-17",
+        "mainEntityOfPage": "https://workwithjigar.in/blog/ai-customer-support-agent-langgraph-rag",
+        "image": "https://workwithjigar.in/assets/blog/ai-customer-support-agent-langgraph-rag.jpg",
+        "publisher": { "@type": "Person", "name": "Jigar Prajapati" },
+        "keywords": ["LangGraph", "RAG", "FastAPI", "AI agents", "tool calling", "Redis"],
+        "articleSection": "Applied AI Engineering"
+      }
+    </script>
+  </head>
+  <body>
+    <div class="reading-progress" id="reading-progress" aria-hidden="true"></div>
+    <div class="glow glow-a" aria-hidden="true"></div>
+    <div class="glow glow-b" aria-hidden="true"></div>
+    <div class="glow glow-c" aria-hidden="true"></div>
+
+    <header class="site-header">
+      <div class="container header-inner">
+        <a class="brand" href="/">WorkWith<span>Jigar</span></a>
+        <nav class="main-nav" aria-label="Primary">
+          <button id="nav-toggle" class="nav-toggle" aria-expanded="false" aria-label="Toggle navigation">
+            <span></span><span></span><span></span>
+          </button>
+          <ul id="nav-menu">
+            <li><a href="/about">About</a></li>
+            <li><a href="/services">Services</a></li>
+            <li><a href="/case-studies">Case Studies</a></li>
+            <li><a href="/blog" aria-current="page">Blog</a></li>
+            <li><a href="/contact">Contact</a></li>
+          </ul>
+        </nav>
+        <div class="header-actions">
+          <a class="header-icon-btn" href="https://www.linkedin.com/in/work-with-jigar" target="_blank" rel="noopener" aria-label="LinkedIn profile">
+            <span class="linkedin-badge">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 1 1 0-4.124 2.062 2.062 0 0 1 0 4.124zM7.119 20.452H3.554V9h3.565v11.452z"/></svg>
+            </span>
+          </a>
+          <a class="btn btn-primary btn-small" href="/contact">Let's talk <span aria-hidden="true">&rarr;</span></a>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="post-hero">
+        <div class="container">
+          <div class="post-breadcrumb" data-reveal>
+            <a href="/blog">Blog</a>
+            <span aria-hidden="true">/</span>
+            <span>Applied AI &amp; Agents</span>
+          </div>
+          <div class="section-label" data-reveal data-delay="0.05">Applied AI &amp; Agents</div>
+          <h1 data-reveal data-delay="0.1">Building a Production AI Customer Support Agent: FastAPI, LangGraph, RAG &amp; Tool Calling</h1>
+          <p class="post-excerpt" data-reveal data-delay="0.15">
+            A chatbot that answers FAQs is a solved problem. An agent that can tell a customer whether
+            their payment actually went through — using real order and payment data, not a guess — is a
+            different system entirely. Here's the architecture I reach for: FastAPI as the API layer,
+            LangGraph for stateful orchestration, RAG for company knowledge, tool calling for real
+            backend actions, and Redis for conversation memory.
+          </p>
+          <div class="blog-meta-row" data-reveal data-delay="0.2">
+            <span class="author">
+              <img class="blog-author-avatar" src="/assets/jigar-profile.jpg" alt="Jigar Prajapati" />
+              Jigar Prajapati
+            </span>
+            <span class="blog-meta-dot" aria-hidden="true"></span>
+            <span>Sep 17, 2026</span>
+            <span class="blog-meta-dot" aria-hidden="true"></span>
+            <span>14 min read</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" style="padding-top: 2.5rem;">
+        <div class="container">
+          <div class="post-cover" style="aspect-ratio: 1672 / 941;" data-reveal>
+            <img src="/assets/blog/ai-customer-support-agent-langgraph-rag.jpg" alt="Illustration of a customer chatting with an AI support agent that routes to a knowledge base, order API, payment API, and human escalation, built with Python, FastAPI, LangGraph, RAG, and Redis" width="1672" height="941" />
+          </div>
+
+          <div class="post-layout" style="margin-top: 3.5rem;">
+            <article class="post-content" id="post-content" data-reveal>
+              <p>
+                Most systems that call themselves an "AI customer support agent" are a thin wrapper
+                around a single call:
+              </p>
+              <pre><code>User → LLM → Response</code></pre>
+              <p>
+                That's fine for FAQs — refund windows, shipping cutoffs, how to reset a password. It
+                falls apart the moment a customer asks something that requires looking anything up:
+              </p>
+              <blockquote>
+                My payment was deducted, but my order is still showing as pending. Can you check it?
+              </blockquote>
+              <p>
+                The model has no way to answer that honestly. It doesn't know this customer's order, it
+                doesn't know their payment status, and if you don't constrain it, it will confidently
+                make something up rather than say "I don't know." A production support agent needs four
+                things a bare chat completion doesn't give you: a way to search your own knowledge base
+                instead of guessing at policy, a way to call your own backend for customer-specific
+                facts, a memory of the conversation that survives more than one HTTP request, and — the
+                part most demos skip — a way to stop and hand off to a human when it's genuinely out of
+                its depth.
+              </p>
+              <p>
+                This is the stack I reach for when a client needs exactly that: Python, FastAPI,
+                LangGraph, RAG, Redis, and tool calling, wired together as one stateful agent rather than
+                a single prompt.
+              </p>
+
+              <h2>What actually makes this an "agent"</h2>
+              <p>
+                The distinction that matters isn't the framework name, it's who makes the decision. A
+                workflow hardcodes it:
+              </p>
+              <pre><code>if "payment" in message:
+    search_payment()</code></pre>
+              <p>
+                An agent hands that decision to the model, and constrains what it's allowed to do about
+                it. For the payment-pending message above, the agent needs to understand the intent,
+                pull the relevant policy from the knowledge base, call an order-status tool, call a
+                payment-status tool, reconcile the two results against each other, and then either answer
+                or escalate. None of that sequence is fixed in code — the model decides which tools it
+                needs and in what order, and the application decides what those tools are allowed to
+                touch. That combination of reasoning, tool access, grounded knowledge, persistent state,
+                and a hard stop for escalation is what separates an agent from a chatbot.
+              </p>
+
+              <h2>Tech stack</h2>
+              <p>A production-leaning stack for this looks like:</p>
+              <ul>
+                <li><strong>FastAPI</strong> — the API surface the frontend or channel integration talks to.</li>
+                <li><strong>LangGraph</strong> — orchestrates the agent as a stateful graph, not a single prompt.</li>
+                <li><strong>LangChain</strong> — tool definitions and the LLM client.</li>
+                <li><strong>A vector database</strong> — pgvector on Postgres, Qdrant, Pinecone, or Weaviate for retrieval.</li>
+                <li><strong>Redis</strong> — short-lived conversation and session state.</li>
+                <li><strong>PostgreSQL</strong> — durable business data: orders, payments, tickets.</li>
+                <li><strong>An OpenAI-compatible LLM</strong> — the reasoning engine behind the agent node.</li>
+              </ul>
+              <p>
+                I'll keep the vector-search interface abstract below — swap in whichever of those you
+                already run.
+              </p>
+
+              <h2>Project structure</h2>
+              <pre><code>customer-support-agent/
+├── app/
+│   ├── main.py
+│   ├── graph.py
+│   ├── state.py
+│   ├── agents/
+│   │   └── support_agent.py
+│   ├── tools/
+│   │   ├── orders.py
+│   │   ├── payments.py
+│   │   └── escalation.py
+│   ├── rag/
+│   │   └── retriever.py
+│   └── memory/
+│       └── redis.py
+├── requirements.txt
+├── Dockerfile
+└── docker-compose.yml</code></pre>
+              <p>
+                Dependencies are deliberately minimal — this doesn't need a heavyweight agent framework
+                on top of LangGraph:
+              </p>
+              <pre><code>pip install fastapi uvicorn langgraph langchain langchain-openai redis pydantic</code></pre>
+
+              <h2>Defining the agent's state</h2>
+              <p>
+                LangGraph is built around a shared state object that every node in the graph reads from
+                and writes to. For a support agent, that state needs to carry the conversation so far,
+                who the customer is, whatever the retriever found, and whether the graph has decided a
+                human needs to take over:
+              </p>
+              <pre><code>from typing import TypedDict, List, Any
+
+
+class SupportState(TypedDict):
+    messages: List[Any]
+    customer_id: str
+    retrieved_context: str
+    tool_results: List[Any]
+    needs_human: bool</code></pre>
+              <p>That state flows through the graph roughly like this:</p>
+              <pre><code>START → understand request → retrieve knowledge → decide/execute tools → generate response → END</code></pre>
+
+              <h2>The RAG layer: grounding the agent in real policy</h2>
+              <p>
+                Support agents need access to internal knowledge — refund policy, shipping cutoffs,
+                cancellation rules, subscription terms, account recovery steps. The wrong way to handle
+                that is stuffing all of it into the system prompt. The right way is Retrieval-Augmented
+                Generation: embed the query, search a vector store, pull back the handful of documents
+                that are actually relevant, and only then let the LLM answer.
+              </p>
+              <p>A minimal retriever, with the vector-search internals abstracted out:</p>
+              <pre><code># rag/retriever.py
+
+def search_knowledge_base(query: str) -> str:
+    """
+    Replace this with pgvector, Qdrant, Pinecone, etc.
+    In production: embed the query, run a similarity
+    search, return the top-k documents (optionally reranked).
+    """
+
+    documents = [
+        {
+            "content": """
+            If a payment is successful but an order remains pending,
+            the order may take several minutes to update.
+            If the status remains pending after 30 minutes,
+            customer support should investigate the transaction.
+            """
+        },
+        {
+            "content": """
+            Refunds for cancelled orders are normally processed
+            within 5-7 business days.
+            """
+        },
+    ]
+
+    return "\n\n".join(doc["content"] for doc in documents)</code></pre>
+              <p>
+                The important part in production isn't this stub, it's the pipeline behind it: query in,
+                embedding out, top-k documents back, optionally through a reranker before they ever
+                reach the LLM.
+              </p>
+
+              <h2>Giving the agent tools, not database access</h2>
+              <p>
+                The agent should never touch your database directly. It gets a small, explicit set of
+                functions — each one a controlled boundary the application owns, not the model.
+              </p>
+              <pre><code># tools/orders.py
+
+from langchain_core.tools import tool
+
+
+@tool
+def get_order_status(order_id: str) -> dict:
+    """Get the current status of an order."""
+
+    # In production this calls your backend API.
+    return {
+        "order_id": order_id,
+        "status": "pending",
+        "amount": 4999,
+    }</code></pre>
+              <pre><code># tools/payments.py
+
+from langchain_core.tools import tool
+
+
+@tool
+def get_payment_status(order_id: str) -> dict:
+    """Check payment status for an order."""
+
+    return {
+        "order_id": order_id,
+        "payment_status": "successful",
+        "transaction_id": "txn_12345",
+    }</code></pre>
+              <pre><code># tools/escalation.py
+
+from langchain_core.tools import tool
+
+
+@tool
+def escalate_to_human(customer_id: str, reason: str) -> dict:
+    """Open a support ticket for a human agent."""
+
+    # Production: create a Zendesk/Intercom/Salesforce ticket.
+    return {
+        "success": True,
+        "ticket_id": "SUP-12345",
+        "message": "Ticket created successfully.",
+    }</code></pre>
+              <p>
+                With these three defined, the LLM has everything it needs to decide when a question is
+                answerable from policy alone and when it needs to check a specific customer's data.
+              </p>
+
+              <h2>Binding tools to the LLM</h2>
+              <pre><code>from langchain_openai import ChatOpenAI
+
+from app.tools.orders import get_order_status
+from app.tools.payments import get_payment_status
+from app.tools.escalation import escalate_to_human
+
+
+tools = [get_order_status, get_payment_status, escalate_to_human]
+
+llm = ChatOpenAI(model="gpt-4o-mini", temperature=0)
+llm_with_tools = llm.bind_tools(tools)</code></pre>
+              <p>
+                Binding doesn't give the model the ability to execute anything. It gives the model the
+                ability to <em>request</em> a tool call with a name and arguments; your application is
+                what actually runs it.
+              </p>
+
+              <h2>The LangGraph agent loop</h2>
+              <p>
+                This is the core of the system: a graph with an agent node, a tool-execution node, and a
+                conditional edge that routes between them until the model has enough information to
+                answer.
+              </p>
+              <pre><code># graph.py
+
+from langgraph.graph import StateGraph, START, END
+from langgraph.prebuilt import ToolNode, tools_condition
+
+from app.state import SupportState
+
+
+def agent_node(state: SupportState):
+    response = llm_with_tools.invoke(state["messages"])
+    return {"messages": state["messages"] + [response]}
+
+
+tool_node = ToolNode(tools)
+
+builder = StateGraph(SupportState)
+builder.add_node("agent", agent_node)
+builder.add_node("tools", tool_node)
+
+builder.add_edge(START, "agent")
+builder.add_conditional_edges(
+    "agent",
+    tools_condition,
+    {"tools": "tools", "__end__": END},
+)
+builder.add_edge("tools", "agent")
+
+graph = builder.compile()</code></pre>
+              <p>
+                <code>tools_condition</code> is what makes this a loop instead of a straight line: after
+                every agent turn, it checks whether the model's response requested a tool call. If it
+                did, execution routes to the tool node, the result gets appended back onto
+                <code>messages</code>, and control returns to the agent — which now has the tool's
+                output and can either call another tool or produce a final answer. If it didn't, the
+                graph ends.
+              </p>
+
+              <figure>
+                <svg viewBox="0 0 600 830" role="img" aria-labelledby="agent-loop-title" style="width: 100%; height: auto;">
+                  <title id="agent-loop-title">Diagram: a customer message flows through Redis, RAG retrieval, and a LangGraph agent/tool loop before a response is returned and saved</title>
+                  <defs>
+                    <marker id="arrow1" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                      <path d="M0 0 L10 5 L0 10 z" fill="var(--border-strong)" />
+                    </marker>
+                  </defs>
+
+                  <circle cx="90" cy="20" r="5" fill="var(--primary-light)" />
+                  <text x="103" y="25" font-size="13" fill="var(--text-muted)" font-family="var(--font-body)">LLM decision point</text>
+                  <circle cx="290" cy="20" r="5" fill="var(--accent-2)" />
+                  <text x="303" y="25" font-size="13" fill="var(--text-muted)" font-family="var(--font-body)">Deterministic step</text>
+
+                  <line x1="300" y1="96" x2="300" y2="136" stroke="var(--border-strong)" stroke-width="2" marker-end="url(#arrow1)" />
+                  <line x1="300" y1="192" x2="300" y2="232" stroke="var(--border-strong)" stroke-width="2" marker-end="url(#arrow1)" />
+                  <line x1="300" y1="288" x2="300" y2="328" stroke="var(--border-strong)" stroke-width="2" marker-end="url(#arrow1)" />
+                  <path d="M300,384 L300,404 L180,404 L180,424" fill="none" stroke="var(--border-strong)" stroke-width="2" marker-end="url(#arrow1)" />
+                  <path d="M180,504 L180,540 L300,540 L300,560" fill="none" stroke="var(--border-strong)" stroke-width="2" marker-end="url(#arrow1)" />
+                  <line x1="300" y1="616" x2="300" y2="656" stroke="var(--border-strong)" stroke-width="2" marker-end="url(#arrow1)" />
+                  <line x1="300" y1="712" x2="300" y2="752" stroke="var(--border-strong)" stroke-width="2" marker-end="url(#arrow1)" />
+
+                  <rect x="70" y="40" width="460" height="56" rx="10" fill="var(--accent-2-soft)" stroke="var(--accent-2)" stroke-width="1.5" />
+                  <text x="300" y="63" text-anchor="middle" font-size="15" font-weight="600" fill="var(--text)" font-family="var(--font-heading)">Customer message</text>
+                  <text x="300" y="82" text-anchor="middle" font-size="12" fill="var(--text-faint)" font-family="var(--font-body)">"My payment was deducted but the order is pending"</text>
+
+                  <rect x="70" y="136" width="460" height="56" rx="10" fill="var(--accent-2-soft)" stroke="var(--accent-2)" stroke-width="1.5" />
+                  <text x="300" y="159" text-anchor="middle" font-size="15" font-weight="600" fill="var(--text)" font-family="var(--font-heading)">FastAPI — POST /support</text>
+                  <text x="300" y="178" text-anchor="middle" font-size="12" fill="var(--text-faint)" font-family="var(--font-body)">Invokes the compiled graph</text>
+
+                  <rect x="70" y="232" width="460" height="56" rx="10" fill="var(--accent-2-soft)" stroke="var(--accent-2)" stroke-width="1.5" />
+                  <text x="300" y="255" text-anchor="middle" font-size="15" font-weight="600" fill="var(--text)" font-family="var(--font-heading)">Redis — load conversation</text>
+                  <text x="300" y="274" text-anchor="middle" font-size="12" fill="var(--text-faint)" font-family="var(--font-body)">Prior turns for this conversation_id</text>
+
+                  <rect x="70" y="328" width="460" height="56" rx="10" fill="var(--accent-2-soft)" stroke="var(--accent-2)" stroke-width="1.5" />
+                  <text x="300" y="351" text-anchor="middle" font-size="15" font-weight="600" fill="var(--text)" font-family="var(--font-heading)">RAG retrieval node</text>
+                  <text x="300" y="370" text-anchor="middle" font-size="12" fill="var(--text-faint)" font-family="var(--font-body)">Vector search over the knowledge base</text>
+
+                  <rect x="70" y="424" width="220" height="80" rx="10" fill="var(--primary-soft)" stroke="var(--primary-light)" stroke-width="2" />
+                  <text x="180" y="450" text-anchor="middle" font-size="14" font-weight="700" fill="var(--text)" font-family="var(--font-heading)">Agent node</text>
+                  <text x="180" y="468" text-anchor="middle" font-size="11" fill="var(--text-faint)" font-family="var(--font-body)">LLM + bound tools</text>
+                  <text x="180" y="484" text-anchor="middle" font-size="11" fill="var(--text-faint)" font-family="var(--font-body)">answer, call a tool, or escalate</text>
+
+                  <rect x="310" y="424" width="220" height="80" rx="10" fill="var(--accent-2-soft)" stroke="var(--accent-2)" stroke-width="1.5" />
+                  <text x="420" y="450" text-anchor="middle" font-size="14" font-weight="600" fill="var(--text)" font-family="var(--font-heading)">Tool node</text>
+                  <text x="420" y="468" text-anchor="middle" font-size="10.5" fill="var(--text-faint)" font-family="var(--font-body)">get_order_status</text>
+                  <text x="420" y="483" text-anchor="middle" font-size="10.5" fill="var(--text-faint)" font-family="var(--font-body)">get_payment_status</text>
+                  <text x="420" y="498" text-anchor="middle" font-size="10.5" fill="var(--text-faint)" font-family="var(--font-body)">escalate_to_human</text>
+
+                  <path d="M291,449 L309,449" stroke="var(--border-strong)" stroke-width="1.6" marker-end="url(#arrow1)" />
+                  <text x="300" y="440" text-anchor="middle" font-size="9.5" fill="var(--text-faint)" font-family="var(--font-body)">tool call</text>
+                  <path d="M309,479 L291,479" stroke="var(--border-strong)" stroke-width="1.6" marker-end="url(#arrow1)" />
+                  <text x="300" y="498" text-anchor="middle" font-size="9.5" fill="var(--text-faint)" font-family="var(--font-body)">tool result</text>
+
+                  <rect x="70" y="560" width="460" height="56" rx="10" fill="var(--accent-2-soft)" stroke="var(--accent-2)" stroke-width="1.5" />
+                  <text x="300" y="583" text-anchor="middle" font-size="15" font-weight="600" fill="var(--text)" font-family="var(--font-heading)">Agent produces final response</text>
+                  <text x="300" y="602" text-anchor="middle" font-size="12" fill="var(--text-faint)" font-family="var(--font-body)">Grounded in retrieved context + tool results</text>
+
+                  <rect x="70" y="656" width="460" height="56" rx="10" fill="var(--accent-2-soft)" stroke="var(--accent-2)" stroke-width="1.5" />
+                  <text x="300" y="679" text-anchor="middle" font-size="15" font-weight="600" fill="var(--text)" font-family="var(--font-heading)">Redis — save conversation</text>
+                  <text x="300" y="698" text-anchor="middle" font-size="12" fill="var(--text-faint)" font-family="var(--font-body)">Appends new messages for the next turn</text>
+
+                  <rect x="70" y="752" width="460" height="56" rx="10" fill="var(--accent-2-soft)" stroke="var(--accent-2)" stroke-width="1.5" />
+                  <text x="300" y="775" text-anchor="middle" font-size="15" font-weight="600" fill="var(--text)" font-family="var(--font-heading)">Response returned to customer</text>
+                  <text x="300" y="794" text-anchor="middle" font-size="12" fill="var(--text-faint)" font-family="var(--font-body)">Same HTTP response, no polling</text>
+                </svg>
+                <figcaption>
+                  The loop only happens between the agent and tool nodes. Everything above and below it
+                  runs exactly once per customer turn — the graph exits the loop the instant the model
+                  stops requesting tools.
+                </figcaption>
+              </figure>
+
+              <div class="post-callout">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" /><path d="M12 8v5" /><circle cx="12" cy="16" r="0.5" fill="currentColor" /></svg>
+                <span>
+                  This loop is the whole reason LangGraph earns its place over a plain function call. A
+                  question that needs two tool calls — order status, then payment status — and a third
+                  round to reconcile them takes the same code path as a question that needs zero. The
+                  graph doesn't know in advance how many hops it'll take, and it doesn't need to.
+                </span>
+              </div>
+
+              <h2>Wiring RAG into the graph</h2>
+              <p>Add a retrieval node in front of the agent, and the graph becomes:</p>
+              <pre><code>START → retrieve knowledge → agent ⇄ tools → response → END</code></pre>
+              <pre><code>def retrieve_node(state: SupportState):
+    user_message = state["messages"][-1].content
+    context = search_knowledge_base(user_message)
+    return {"retrieved_context": context}</code></pre>
+              <p>Then the retrieved context gets injected straight into the system prompt for that turn:</p>
+              <pre><code>from langchain_core.messages import SystemMessage
+
+SYSTEM_PROMPT = """
+You are a customer support AI agent.
+
+Rules:
+1. Use the knowledge base when answering policy questions.
+2. Use tools when customer-specific information is required.
+3. Never invent order or payment information.
+4. Escalate when the issue cannot be safely resolved.
+5. Keep responses concise and professional.
+"""
+
+
+def agent_node(state: SupportState):
+    context = state["retrieved_context"]
+
+    messages = [
+        SystemMessage(content=f"{SYSTEM_PROMPT}\n\nKnowledge Base:\n{context}"),
+        *state["messages"],
+    ]
+
+    response = llm_with_tools.invoke(messages)
+    return {"messages": state["messages"] + [response]}</code></pre>
+              <p>
+                Rule 3 in that prompt is doing real work. Retrieval gives the model policy to ground on;
+                tools give it customer-specific facts to ground on. Between the two, there's no reason
+                for it to be inventing an order status.
+              </p>
+
+              <h2>Redis for conversation memory</h2>
+              <p>
+                Without memory, every message the customer sends is processed cold — the agent has no
+                idea what was said two turns ago. Redis fixes that cheaply: it's a good fit for
+                short-lived, per-conversation state, while durable customer and order records stay in
+                Postgres where they belong.
+              </p>
+              <pre><code># memory/redis.py
+
+import json
+import redis
+
+redis_client = redis.Redis(host="localhost", port=6379, decode_responses=True)
+
+
+def save_conversation(conversation_id: str, messages: list):
+    redis_client.set(f"conversation:{conversation_id}", json.dumps(messages))
+
+
+def get_conversation(conversation_id: str):
+    data = redis_client.get(f"conversation:{conversation_id}")
+    return json.loads(data) if data else []</code></pre>
+
+              <h2>Exposing it through FastAPI</h2>
+              <pre><code># main.py
+
+from fastapi import FastAPI
+from pydantic import BaseModel
+
+from app.graph import graph
+
+app = FastAPI(title="AI Customer Support Agent")
+
+
+class SupportRequest(BaseModel):
+    conversation_id: str
+    customer_id: str
+    message: str
+
+
+@app.post("/support")
+async def support(request: SupportRequest):
+    result = graph.invoke(
+        {
+            "messages": [{"role": "user", "content": request.message}],
+            "customer_id": request.customer_id,
+            "retrieved_context": "",
+            "tool_results": [],
+            "needs_human": False,
+        }
+    )
+
+    final_message = result["messages"][-1]
+
+    return {
+        "conversation_id": request.conversation_id,
+        "response": final_message.content,
+    }</code></pre>
+              <pre><code>uvicorn app.main:app --reload</code></pre>
+              <p>Example request against that endpoint:</p>
+              <pre><code>POST /support
+{
+  "conversation_id": "conv_123",
+  "customer_id": "customer_456",
+  "message": "My payment was deducted but my order is still pending."
+}</code></pre>
+              <p>
+                Behind that single response, the graph did four to six model/tool round trips — the
+                caller never sees the intermediate steps, only the final grounded answer. For the payment
+                example, that answer might read something like: <em>"Your payment was successful, but
+                the order is still pending — that status can take a few minutes to update, and there's
+                no indication the transaction failed."</em> The key property isn't the wording, it's that
+                every fact in that sentence came from a tool call, not from the model's imagination.
+              </p>
+
+              <h2>Human-in-the-loop</h2>
+              <p>
+                A production agent shouldn't try to resolve everything on its own. Fraud, refund
+                disputes, account takeover, legal complaints, high-value transactions, and repeated
+                failed resolutions belong with a person, not a model. That boundary is enforced with a
+                routing function on <code>needs_human</code>:
+              </p>
+              <pre><code>def should_escalate(state: SupportState):
+    return "human" if state["needs_human"] else "continue"</code></pre>
+              <p>
+                When it routes to <code>"human"</code>, the graph calls <code>escalate_to_human</code>
+                and hands the conversation off with a ticket ID instead of trying one more time. Agent
+                autonomy has to be bounded by business rules the model doesn't get to override — this is
+                where that boundary actually lives in the code.
+              </p>
+
+              <h2>Tool security: the model requests, your backend decides</h2>
+              <blockquote>
+                The agent decides what it wants to do. Your backend decides whether it's allowed to do
+                it, and what data it's allowed to touch.
+              </blockquote>
+              <p>
+                The most common mistake in agent design is treating the LLM as a trusted caller. It isn't
+                one — prompt injection from a malicious message, a hallucinated argument, or just an
+                overly broad tool definition can turn "helpful agent" into "unauthenticated database
+                client" fast. Every tool needs the same guarantees you'd put around any other internal
+                API:
+              </p>
+              <pre><code>@tool
+def cancel_order(order_id: str):
+    # Validate ownership
+    # Check cancellation policy
+    # Call the order service
+    # Record an audit event
+    ...</code></pre>
+              <p>
+                Authentication, authorization tied to the requesting customer, input validation, audit
+                logging, rate limiting, and idempotency where the action isn't safely repeatable. The
+                model decides which tool to call and with what arguments; your application still owns the
+                decision about whether that call is actually permitted.
+              </p>
+
+              <h2>RAG is more than a vector search call</h2>
+              <p>
+                A production retrieval pipeline usually earns its keep beyond a single embedding lookup.
+                Query rewriting cleans up an ambiguous customer message before it's embedded. Running
+                vector search and a keyword method like BM25 in parallel and reranking the combined
+                results catches cases pure semantic search misses — policy documents are often short and
+                keyword-heavy, which vector search alone can underweight. And metadata filtering (product
+                line, region, language, policy version) keeps a query about Indian payment methods from
+                surfacing a shipping policy written for a different market.
+              </p>
+
+              <h2>Observability</h2>
+              <p>
+                A single customer request here can trigger several LLM calls and several tool calls
+                before anything comes back — that fan-out is exactly what makes agentic systems harder to
+                debug than a single request/response API. Worth tracking per request:
+              </p>
+              <ul>
+                <li>Latency, broken down by graph node</li>
+                <li>Token usage and LLM cost</li>
+                <li>Which tools were called, with what arguments, and whether they failed</li>
+                <li>Retrieval quality — were the right documents actually returned</li>
+                <li>Escalation rate and resolution rate over time</li>
+              </ul>
+              <p>Tracing tools like LangSmith or Langfuse make this fan-out inspectable instead of a black box.</p>
+
+              <h2>Evaluation</h2>
+              <p>
+                "Does the answer look reasonable" isn't a test suite. What's worth asserting on is
+                whether the agent picked the right tool for a given question, since that's the decision
+                most likely to go wrong silently:
+              </p>
+              <pre><code>TEST_CASES = [
+    {"question": "Where is my order?", "expected_tool": "get_order_status"},
+    {"question": "Can I get a refund?", "expected_tool": None},
+    {"question": "My payment was charged twice.", "expected_tool": "get_payment_status"},
+]</code></pre>
+              <p>
+                Beyond tool-selection accuracy, track argument accuracy, retrieval quality, final-answer
+                correctness, whether escalation fired when it should have, latency, and cost — in that
+                rough order of how often they actually break in practice.
+              </p>
+
+              <h2>Production architecture</h2>
+              <p>A deployment of this shape scales the same way any stateless API does:</p>
+              <pre><code>Customer
+   │
+   ▼
+FastAPI  (horizontally scalable, behind a load balancer)
+   │
+   ├── Redis          conversation / session state
+   ├── Vector DB       knowledge base for RAG
+   └── LangGraph agent
+         ├── LLM API
+         └── Tool calls → internal REST APIs → PostgreSQL
+                                              → Ticketing system (human escalation)</code></pre>
+              <p>
+                Locally, that's a two-service Docker Compose file — the API and Redis:
+              </p>
+              <pre><code>services:
+  api:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      REDIS_HOST: redis
+      OPENAI_API_KEY: ${OPENAI_API_KEY}
+    depends_on:
+      - redis
+
+  redis:
+    image: redis:7
+    ports:
+      - "6379:6379"</code></pre>
+
+              <h2>Not every support flow needs an agent</h2>
+              <p>
+                A password reset doesn't need an LLM in the loop — it's <code>API → reset password</code>,
+                full stop, and introducing a model there only adds latency and a new failure mode. But
+                "my account was charged twice, my order hasn't arrived, and I want to know if I can get a
+                refund" bundles three intents into one message and genuinely benefits from a model that
+                can reason across them.
+              </p>
+              <blockquote>
+                Agentic AI doesn't mean using an LLM everywhere. It means giving the model controlled
+                autonomy exactly where dynamic decision-making earns its cost — and routing everything
+                else straight to deterministic code.
+              </blockquote>
+              <p>
+                The practical version of that is an intent router in front of the agent: known,
+                single-step operations go straight to a deterministic backend call; anything ambiguous,
+                multi-intent, or requiring judgment goes to the LangGraph agent. Most of the traffic a
+                support system sees is the former. The agent earns its complexity on the smaller slice
+                that actually needs it.
+              </p>
+
+              <h2>Key takeaways</h2>
+              <p>
+                A production-grade AI customer support agent isn't an LLM with a system prompt — it's a
+                small distributed system with the LLM as one component inside it:
+              </p>
+              <ul>
+                <li><strong>FastAPI</strong> — the API layer</li>
+                <li><strong>LangGraph</strong> — stateful orchestration and the agent/tool loop</li>
+                <li><strong>RAG</strong> — company-specific knowledge, grounded and cited</li>
+                <li><strong>Tool calling</strong> — controlled, audited access to real backend systems</li>
+                <li><strong>Redis</strong> — conversation and session state</li>
+                <li><strong>PostgreSQL</strong> — durable business data</li>
+                <li><strong>Human-in-the-loop</strong> — a hard boundary the model can't reason its way past</li>
+                <li><strong>Observability and evaluation</strong> — because a multi-hop agent fails in ways a single API call never does</li>
+              </ul>
+              <p>
+                The principle underneath all of it: keep the LLM inside a controlled system. The model
+                gets to decide <em>what</em> it wants to do. Your application always decides <em>whether
+                it's allowed to</em>, and <em>what data it can see</em> while doing it. That's the line
+                between a demo chatbot and something you can actually put in front of paying customers.
+              </p>
+
+              <div class="post-tags tag-row">
+                <span>LangGraph</span>
+                <span>RAG</span>
+                <span>FastAPI</span>
+                <span>AI Agents</span>
+                <span>Tool Calling</span>
+              </div>
+            </article>
+
+            <aside class="post-sidebar">
+              <nav class="post-toc" aria-label="Table of contents">
+                <div class="post-toc-label">On this page</div>
+                <ul id="post-toc-list"></ul>
+              </nav>
+              <div class="post-share">
+                <span class="post-share-label">Share</span>
+                <div class="post-share-row">
+                  <button type="button" class="post-share-btn" data-share="x" aria-label="Share on X">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.9 2H22l-7.6 8.7L23.3 22h-6.9l-5.4-6.6L4.8 22H1.7l8.1-9.3L1 2h7l4.9 6.1L18.9 2Zm-1.2 18h1.9L7.4 4H5.4l12.3 16Z"/></svg>
+                  </button>
+                  <button type="button" class="post-share-btn" data-share="linkedin" aria-label="Share on LinkedIn">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 1 1 0-4.124 2.062 2.062 0 0 1 0 4.124zM7.119 20.452H3.554V9h3.565v11.452z"/></svg>
+                  </button>
+                  <button type="button" class="post-share-btn" data-share="copy" aria-label="Copy link">
+                    <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" /><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" /></svg>
+                    <span class="post-share-tooltip" data-copy-tooltip aria-live="polite">Copied!</span>
+                  </button>
+                </div>
+              </div>
+            </aside>
+          </div>
+
+          <div class="post-author-card" data-reveal>
+            <img src="/assets/jigar-profile.jpg" alt="Jigar Prajapati" />
+            <div>
+              <h4>Jigar Prajapati</h4>
+              <p>AI Product Engineer &amp; Senior Backend Engineer building production backend systems, cloud infrastructure, and applied AI products.</p>
+              <div class="post-author-links">
+                <a href="/about">About me</a>
+                <a href="https://www.linkedin.com/in/work-with-jigar" target="_blank" rel="noopener">LinkedIn</a>
+                <a href="https://x.com/jigar_8931" target="_blank" rel="noopener">X (Twitter)</a>
+                <a href="https://github.com/workwithjigar" target="_blank" rel="noopener">GitHub</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="post-nav" data-reveal>
+            <a class="view-case-study" href="/blog">&larr; Back to all articles</a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-grid">
+        <div class="footer-brand">
+          <a class="brand" href="/">WorkWith<span>Jigar</span></a>
+          <p>AI Product Engineer &amp; Senior Backend Engineer building production-grade backend systems and applied AI products.</p>
+        </div>
+        <div class="footer-links">
+          <h4>Explore</h4>
+          <a href="/about">About</a>
+          <a href="/services">Services</a>
+          <a href="/case-studies">Case Studies</a>
+          <a href="/blog">Blog</a>
+          <a href="/contact">Contact</a>
+        </div>
+        <div class="footer-contact">
+          <h4>Get in touch</h4>
+          <a href="mailto:workwithjigar@gmail.com">workwithjigar@gmail.com</a>
+          <a href="https://www.linkedin.com/in/work-with-jigar" target="_blank" rel="noopener">LinkedIn</a>
+          <a href="https://x.com/jigar_8931" target="_blank" rel="noopener">X (Twitter)</a>
+          <a href="https://github.com/workwithjigar" target="_blank" rel="noopener">GitHub</a>
+        </div>
+      </div>
+      <div class="container footer-bottom">
+        <span>© <span id="year"></span> Jigar Prajapati. All rights reserved.</span>
+        <span class="footer-tag">built from scratch, shipped with care.</span>
+      </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script src="/js/app.js" defer></script>
+    <script src="/js/blog.js" defer></script>
+  </body>
+</html>
